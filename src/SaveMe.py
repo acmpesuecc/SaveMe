@@ -4,6 +4,24 @@ from tkinter import Tk, Label, Button, Entry, END
 from PIL import Image, ImageTk  
 import tkinter.messagebox as messagebox
 import random
+import vlc
+
+
+# List of online music URLs
+music_urls = [
+    'https://s.h8wenjfbjkesf.org/dl.php?id=621b4b3650bbd8d47397588ac997f465',
+    'https://a.h8wenjfbjkesf.org/dl.php?id=1fe8c56e98deaab3992bb8747aa7107b',
+    'https://o.h8wenjfbjkesf.org/dl.php?id=b48a975609baffc95446d78bfd17e1ea',
+    'https://a.h8wenjfbjkesf.org/dl.php?id=d2204a42c53ce48dd4183785b4b051e0'
+    # Here you can add link to download music that can be played .
+]
+
+# Choose a random URL from the list
+random_music_url = random.choice(music_urls)
+
+# Play the selected music using VLC
+player = vlc.MediaPlayer(random_music_url)
+player.play()
 
 # main loop starts here
 SaveMe = Tk()
@@ -541,3 +559,6 @@ def finalscreen():
 
 startscreen()  
 SaveMe.mainloop()
+
+
+os.remove('youtube_audio.mp3')

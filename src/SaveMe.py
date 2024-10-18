@@ -11,7 +11,7 @@ pygame.mixer.pre_init(44100, -16, 2, 2048) # initialising the pygame music playe
 pygame.init()
 pygame.mixer.init()
 
-pygame.mixer.music.load(r"C:\Users\user\Documents\ACM-hacknight\SaveMe-acm\etro-game-music-245230.mp3")# loading the music file
+pygame.mixer.music.load(r"src\etro-game-music-245230.mp3")# loading the music file
 pygame.mixer.music.play()#playing the music file using pygames music player
 
 SaveMe = Tk()

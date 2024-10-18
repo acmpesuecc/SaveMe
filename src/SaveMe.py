@@ -514,7 +514,7 @@ def sixthscreen():
         skiplabel = Label(SaveMe, text="""You decided to skip this round. :( """, font=("Helvetica", 20), fg="white", bg="#1C1C1E", wraplength=800)
         skiplabel.place(x=100, y=200)
 
-        nextbutton = Button(SaveMe, text="Next", borderwidth=0, highlightthickness=0, command=finalscreen,
+        nextbutton = Button(SaveMe, text="Next", borderwidth=0, highlightthickness=0, command=seventhscreen,
                             bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
         nextbutton.place(x=450, y=500)
 
@@ -526,6 +526,105 @@ def sixthscreen():
     nobutton.place(x=500, y=700)
 
 ## Add the seventh scene here!
+def seventhscreen():
+    def lyric_continue1():
+        seven = Label(SaveMe, image=room2Image, background="#1C1C1E", height=1000, width=1000)
+        seven.place(x=0, y=0, relwidth=1, relheight=1)
+        p = Label(SaveMe, text="""what do you say?""", font=("Helvetica", 20), fg="white", bg="#1C1C1E", wraplength=800)
+     
+        p.place(x=100, y=200)
+
+        guessentry = Entry(SaveMe, font=("Helvetica", 20), width=10)
+        guessentry.place(x=350, y=300)
+
+        guessbutton = Button(SaveMe, text="Submit", borderwidth=0, highlightthickness=0,
+                             command=lambda: songsolver1(guessentry.get()), 
+                             bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
+        guessbutton.place(x=350, y=400)
+    
+
+    for widget in SaveMe.winfo_children():
+        widget.destroy()
+    seven = Label(SaveMe, image=room2Image, background="#1C1C1E", height=1000, width=1000)
+    seven.place(x=0, y=0, relwidth=1, relheight=1) 
+
+    seventhlabel = Label(SaveMe, text="""* You end in a another room and the door shuts locked behind you (deja vu), a ghost comes up to you and says 
+    
+    "YOU'VE BEEN HIT BY, YOU'VE BEEN STRUCK BY A " 
+                        """, font=("Helvetica", 20), fg="white", bg="#1C1C1E", wraplength=800)
+    seventhlabel.place(x=100, y=200)
+    connbutton = Button(SaveMe, text="Continue", borderwidth=0, highlightthickness=0,command=lyric_continue1 ,
+                    bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
+    connbutton.place(x=400,y=700)
+    def lyric_continue2():
+        seven = Label(SaveMe, image=room2Image, background="#1C1C1E", height=1000, width=1000)
+        seven.place(x=0, y=0, relwidth=1, relheight=1)
+        p = Label(SaveMe, text="""IT SINGS, 'We are the champions
+        No time for losers
+        'Cause we are the champions of the'""", font=("Helvetica", 20), fg="white", bg="#1C1C1E", wraplength=800)
+     
+        p.place(x=100, y=200)
+
+        guessentry = Entry(SaveMe, font=("Helvetica", 20), width=10)
+        guessentry.place(x=350, y=300)
+
+        guessbutton = Button(SaveMe, text="Submit", borderwidth=0, highlightthickness=0,
+                             command=lambda: songsolver2(guessentry.get()), 
+                             bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
+        guessbutton.place(x=350, y=400)
+    def lyric_continue3():
+        seven = Label(SaveMe, image=room2Image, background="#1C1C1E", height=1000, width=1000)
+        seven.place(x=0, y=0, relwidth=1, relheight=1)
+        p = Label(SaveMe, text="""IT FINALLY SAYS "Sound of the drums
+    Beating in my heart
+    The thunder of guns
+    Tore me apart
+    You've been
+        """, font=("Helvetica", 20), fg="white", bg="#1C1C1E", wraplength=800)
+     
+        p.place(x=100, y=200)
+
+        guessentry = Entry(SaveMe, font=("Helvetica", 20), width=10)
+        guessentry.place(x=350, y=500)
+
+        guessbutton = Button(SaveMe, text="Submit", borderwidth=0, highlightthickness=0,
+                             command=lambda: songsolver3(guessentry.get()), 
+                             bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
+        guessbutton.place(x=350, y=800)
+
+   
+
+    
+
+    def songsolver1(answer):
+        userans1 = answer.strip().upper()
+
+        if userans1 == "SMOOTHCRIMINAL" :
+            messagebox.showinfo("CORRECT","Correct!")
+            lyric_continue2()  
+        else:
+            messagebox.showerror("wrong","Incorrect answer, Game over!")
+    def songsolver2(answer):
+        userans1 = answer.strip().upper()
+
+        if userans1 == "WORLD" :
+            messagebox.showinfo("CORRECT","Correct!")
+            lyric_continue3()  
+        else:
+            messagebox.showerror("wrong","Incorrect answer, Game over!")
+            finalscreen()
+    def songsolver3(answer):
+        userans1 = answer.strip().upper()
+
+        if userans1 == "THUNDERSTRUCK" :
+            messagebox.showinfo("CORRECT","Correct, YOU CAN PROCEED!")
+            finalscreen()  
+        else:
+            messagebox.showerror("wrong","Incorrect answer, Game over!")
+            finalscreen()
+
+
+
 
 
 def finalscreen():

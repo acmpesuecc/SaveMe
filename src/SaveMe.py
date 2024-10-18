@@ -52,8 +52,8 @@ def startscreen():
     sLabel = Label(SaveMe, image=sImage, background="#1C1C1E", height=1000, width=1000)
     sLabel.place(x=0, y=0, relwidth=1, relheight=1)  
     
-    sbutton = Button(SaveMe, text="BEGIN!", borderwidth=0, highlightthickness=0, command=firstscreen, 
-                     bg="#1C1C1E", fg="white", width=25, height=4, font=("Helvetica", 18))
+    sbutton = Button(SaveMe, text="Let's begin the quest!", borderwidth=0, highlightthickness=0, command=firstscreen, 
+                     bg="black", fg="white", width=25, height=4, font=("Helvetica", 18))
     sbutton.place(x=350, y=350)
 
 def firstscreen():
@@ -64,35 +64,34 @@ def firstscreen():
     def yes():    
         yesbutton.destroy()
         nobutton.destroy()
-        letter.config(text="""The letter reads as follows:
-                            
+        letter.config(text="""Here is what the letter holds:
                             \"Aaron, if you are reading this, you've taken the first step on a journey I've long envisioned. 
             Hidden within those walls are truths waiting to be uncovered, and the key lies in your ability to decipher the clues....\"""",
-                             font=("Helvetica", 14), fg="white", bg="#1C1C1E", wraplength=800)  
+                             font=("Helvetica", 14), fg="white", bg="grey", wraplength=800)  
         
         conbutton.place(x=400, y=500)
 
     def no():
         SaveMe.quit()
 
-    sLabel = Label(SaveMe, image=sImage, background="#1C1C1E", height=1000, width=1000)
+    sLabel = Label(SaveMe, image=sImage, background="grey", height=1000, width=1000)
     sLabel.place(x=0, y=0, relwidth=1, relheight=1) 
 
     letter = Label(SaveMe, text="""      *You are Aaron*
                    You have received a letter. Click yes to continue.""", 
-                         font=("Helvetica", 18), fg="white", bg="#1C1C1E", wraplength=800)  
+                         font=("Helvetica", 18), fg="white", bg="grey", wraplength=800)  
     letter.place(x=100, y=300)  
 
     yesbutton = Button(SaveMe, text="Yes", borderwidth=0, highlightthickness=0, command=yes, 
-                        bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
+                        bg="grey", fg="white", width=10, height=2, font=("Helvetica", 14))
     yesbutton.place(x=350, y=400)
 
     nobutton = Button(SaveMe, text="No", borderwidth=0, highlightthickness=0, command=no, 
-                       bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
+                       bg="grey", fg="white", width=10, height=2, font=("Helvetica", 14))
     nobutton.place(x=500, y=400)
 
     conbutton = Button(SaveMe, text="Continue", borderwidth=0, highlightthickness=0, command=secondscreen,
-                             bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
+                             bg="grey", fg="white", width=10, height=2, font=("Helvetica", 14))
 
 def secondscreen():
     # visiting the mansion and the initial quest is mentioned

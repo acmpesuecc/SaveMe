@@ -283,9 +283,12 @@ def fifthscreen():
         guess_history.append(guess_code)
         bulls, cows = calculate_bullscows(guess_code)
         if bulls == 4:
+            on_quest_completed()  # Call this when they guess the code correctly
             messagebox.showinfo("GUESSED IT!", f"You guessed the code {code} in {guess} attempts!")
             sixthscreen()
+
         elif guess >= max_guess:
+            on_quest_failed()
             messagebox.showwarning("Better Luck :(", f"You've used all your {max_guess} attempts! The code was {code}.")
             sixthscreen()
         else:
@@ -298,6 +301,10 @@ def fifthscreen():
         cows = sum(1 for digit in guess_code if digit in code) - bulls
         return bulls, cows
     def skipp():
+        def skipp():
+            on_quest_skipped()  # Call this when they skip the quest
+            for widget in SaveMe.winfo_children():
+                widget.place_forget()
         for widget in SaveMe.winfo_children():
             widget.place_forget()
         fif.place(x=0, y=0, relwidth=1, relheight=1)
@@ -401,38 +408,56 @@ def sixthscreen():
     nobutton = Button(SaveMe, text="No", borderwidth=0, highlightthickness=0, command=skipp, 
                        bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
     nobutton.place(x=500, y=700)
+
+# Initialize counters globally
+completed_quests = 0
+skipped_quests = 0
+failed_quests = 0
+
+# Example for completed quest counter increment
+def on_quest_completed():
+    global completed_quests
+    completed_quests += 1
+
+# Example for skipped quest counter increment
+def on_quest_skipped():
+    global skipped_quests
+    skipped_quests += 1
+
+# Example for failed quest counter increment
+def on_quest_failed():
+    global failed_quests
+    failed_quests += 1
+
 def finalscreen():
     for widget in SaveMe.winfo_children():
-        widget.destroy() 
+        widget.destroy()
+
     fLabel = Label(SaveMe, image=finalImage, background="#1C1C1E", height=1000, width=1000)
     fLabel.place(x=0, y=0, relwidth=1, relheight=1)
 
-    # Final message for the player
-    final = Label(SaveMe, text="""THE FINAL SCREEN. YOUR ENDING IS DECIDED HERE. 
-    
-    You finally open the letter and the words seem to glow as you read:
+    # Calculate the performance based on completed, skipped, and failed quests
+    total_quests = completed_quests + skipped_quests + failed_quests
 
-    "Dear Challenger,
-    
-    You've come far, solving every puzzle and facing every challenge with courage. 
-    However, this journey was never truly about the quests. 
-    It was about you discovering the patience, wit, and resolve you possess.
-    
-    The key you found unlocks not just doors, but opportunities in life. 
-    The letter you now hold is not just a message, but a reminder that every challenge holds a lesson.
-    
-    Congratulations on completing the game, but your real journey begins now...
+    # Determine the ending based on their performance
+    if completed_quests == total_quests:
+        ending_text = "Congratulations! You completed every quest with success. You achieved the BEST ENDING."
+    elif completed_quests >= total_quests // 2:
+        ending_text = "Well done! You completed most of the quests and reached a GOOD ENDING."
+    elif completed_quests > 0:
+        ending_text = "You completed a few quests but skipped or failed many. This is an AVERAGE ENDING."
+    else:
+        ending_text = "You skipped or failed all the quests... This is the WORST ENDING."
 
-    *The candle flickers, and the letter starts to burn in your hand, leaving only ash...*
-
-    **THE END**""",
-    font=("Helvetica", 20), fg="white", bg="#1C1C1E", wraplength=800)
+    # Display the ending
+    final = Label(SaveMe, text=ending_text, font=("Helvetica", 20), fg="white", bg="#1C1C1E", wraplength=800)
     final.place(x=100, y=200)
 
     # Button to close the game
     exitbutton = Button(SaveMe, text="Exit Game", borderwidth=0, highlightthickness=0, 
                         command=SaveMe.quit, bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
     exitbutton.place(x=450, y=500)
+
 
 startscreen()
 SaveMe.mainloop()

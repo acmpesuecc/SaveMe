@@ -6,6 +6,7 @@ import tkinter.messagebox as messagebox
 import random
 
 # main loop starts here
+
 SaveMe = Tk()
 SaveMe.geometry("1000x1000")
 SaveMe["background"]= "#1C1C1E"
@@ -47,6 +48,7 @@ finalImage = finalImage.resize((1000, 1000), Image.Resampling.LANCZOS)
 finalImage = ImageTk.PhotoImage(finalImage)
 
 #___________________MAIN_______________________________
+qst=0
 def startscreen():
     # start screen
     sLabel = Label(SaveMe, image=sImage, background="#1C1C1E", height=1000, width=1000)
@@ -121,7 +123,7 @@ def secondscreen():
                                 Guard: That is all I have to say to you. Good luck. What awaits on the other end is for you to find out.""",
                              font=("Helvetica", 14), fg="white", bg="#1C1C1E", wraplength=800)
 
-        nextbutton.place(x=450, y=800)
+        nextbutton.place(x=100, y=100)
     def nextinsecond():
         nextbutton.place_forget()
         secondlabel.config(text="""*While you were looking around the mansion, you stumble across a room which looks familiar. 
@@ -130,7 +132,7 @@ def secondscreen():
                             "Solve the riddle if you want to see yourself out. This is your first quest." *""",
                          font=("Helvetica", 14), fg="white", bg="#1C1C1E", wraplength=800)
         nextbutton.config(command=thirdscreen)
-        nextbutton.place(x=450, y=800)
+        nextbutton.place(x=100, y=100)
 
             
     def quitt():
@@ -179,6 +181,8 @@ def thirdscreen():
 
         if userans == "5" or userans == "FIVE":
             messagebox.showinfo("Correct!", "You've solved the riddle!")
+            global qst 
+            qst += 1
             correct()  
         else:
             messagebox.showerror("Incorrect", "Incorrect answer. Try again!")
@@ -194,7 +198,7 @@ def thirdscreen():
 
         nextbutton = Button(SaveMe, text="Next", borderwidth=0, highlightthickness=0, command=fourthscreen,
                             bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
-        nextbutton.place(x=450, y=500)
+        nextbutton.place(x=100, y=100)
 
     def incorrect():
         for widget in SaveMe.winfo_children():
@@ -240,6 +244,7 @@ def fourthscreen():
                 (choice == "Scissors" and mannequin == "Paper") or \
                 (choice == "Paper" and mannequin == "Rock"):
             messagebox.showinfo("WIN!","Congrats! You WIN this round!")
+            qst+=1
             nexxt()
         else:
             messagebox.showwarning("Defeat!","You lost this round. Better luck next time!")
@@ -265,11 +270,14 @@ def fourthscreen():
 
 
         rock = Button(SaveMe, text="Rock", borderwidth=0, highlightthickness=0, command=lambda: play("Rock"), 
-                       bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14)).place(x=300, y=400)
+                       bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
+        rock.place(x=300, y=200)
         paper = Button(SaveMe, text="Paper", borderwidth=0, highlightthickness=0, command=lambda: play("Paper"), 
-                       bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14)).place(x=450, y=400)
+                       bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
+        paper.place(x=450, y=200)
         scissors = Button(SaveMe, text="Scissors", borderwidth=0, highlightthickness=0, command=lambda: play("Scissors"), 
-                       bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14)).place(x=600, y=400)
+                       bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
+        scissors.place(x=600, y=200)
 
         
     def try_Again():
@@ -378,6 +386,8 @@ def fifthscreen():
 
         if bulls == 4:
             messagebox.showinfo("GUESSED IT!", f"You guessed the code {code} in {guess} attempts!")
+            global qst 
+            qst += 1
             sixthscreen()
         elif guess >= max_guess:
             messagebox.showwarning("Better Luck :(", f"You've used all your {max_guess} attempts! The code was {code}.")
@@ -464,6 +474,8 @@ def sixthscreen():
             displaylabel.config(text=" ".join(display)) 
             if "_" not in display:  
                 messagebox.showinfo("CONGRATS!", "You guessed the word. Now you can read the Letter!")
+                global qst 
+                qst += 1
                 finalscreen()
 
             if incorrect >= max:  
@@ -534,8 +546,13 @@ def finalscreen():
         widget.destroy() 
     fLabel = Label(SaveMe, image=finalImage, background="#1C1C1E", height=1000, width=1000)
     fLabel.place(x=0, y=0, relwidth=1, relheight=1) 
-
-    final = Label(SaveMe, text="""THE FINAL SCREEN. YOUR ENDING IS DECIDED HERE. """, font=("Helvetica", 20), fg="white", bg="#1C1C1E")
+    if qst<2:
+        txt="you have faild and your flesh will be used to fuel the revivel of dabura the demon king"
+    elif qst>3:
+        txt="congrats you have passed most of the quests you are now the apprentice of dabura the demon king"
+    else:
+        txt="you have done ok , you are now the servent of the great demon king dabura"
+    final = Label(SaveMe, text=txt, font=("Helvetica", 20), fg="red", bg="#1C1C1E")
     final.place(x=100, y=200)
 
 

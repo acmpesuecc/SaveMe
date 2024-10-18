@@ -1,7 +1,7 @@
 # SaveMe
 
 A tkinter GUI based adventure game on Python. 
-Take the role of Aaron and save yourself by solving Quests and see where this leads you to!
+Play as Aaron, who recieves a letter one day about exploring a creepy mansion. Solve riddles using clues and escape the mansion to reach one of three endings!
 
 ## Requirements
 - **Python 3.x (preferably 3.6 or higher)**

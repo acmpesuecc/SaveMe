@@ -12,6 +12,11 @@ SaveMe["background"]= "#1C1C1E"
 SaveMe.title("SaveMe")
 SaveMe.resizable(width=0, height=0)
 basedir = os.path.dirname(os.path.abspath(__file__))
+colors = ["Red", "Green", "Blue", "Yellow", "Purple"]
+secret_code = []
+guess_number = 1
+attempts = 10
+entries = []
 
 #________________IMAGES__________________
 sImage = Image.open(os.path.join(basedir, "assets", "sroom.png"))
@@ -514,7 +519,7 @@ def sixthscreen():
         skiplabel = Label(SaveMe, text="""You decided to skip this round. :( """, font=("Helvetica", 20), fg="white", bg="#1C1C1E", wraplength=800)
         skiplabel.place(x=100, y=200)
 
-        nextbutton = Button(SaveMe, text="Next", borderwidth=0, highlightthickness=0, command=finalscreen,
+        nextbutton = Button(SaveMe, text="Next", borderwidth=0, highlightthickness=0, command=seventhscreen(SaveMe),
                             bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
         nextbutton.place(x=450, y=500)
 
@@ -526,9 +531,81 @@ def sixthscreen():
     nobutton.place(x=500, y=700)
 
 ## Add the seventh scene here!
+def seventhscreen(SaveMe):
+    global secret_code, guess_number, entries, feedback_label
 
+    # Destroy existing widgets
+    for widget in SaveMe.winfo_children():
+        widget.destroy()
 
-def finalscreen():
+    SaveMe.title("Mastermind with a Twist")
+    SaveMe.geometry("600x600")
+    SaveMe["background"] = "#1C1C1E"
+
+    # Generate the secret code
+    secret_code = random.sample(colors, 4)
+    print("Secret Code (for testing):", secret_code)  # For debugging
+
+    # Create widgets
+    info_label = tk.Label(SaveMe, text="Guess the 4-color code!", font=("Helvetica", 18), bg="#1C1C1E", fg="white")
+    info_label.pack(pady=10)
+
+    entries = []
+    for i in range(4):
+        entry = tk.Entry(SaveMe, font=("Helvetica", 18), width=10)
+        entry.pack(padx=5, pady=5)
+        entries.append(entry)
+
+    submit_button = tk.Button(SaveMe, text="Submit Guess", command=lambda: check_guess(SaveMe), font=("Helvetica", 14), bg="#333", fg="white")
+    submit_button.pack(pady=20)
+
+    # Feedback label - Store reference
+    feedback_label = tk.Label(SaveMe, text="", font=("Helvetica", 14), bg="#1C1C1E", fg="white")
+    feedback_label.pack(pady=10)
+
+    distraction_label = tk.Label(SaveMe, text="", font=("Helvetica", 14), bg="#1C1C1E", fg="red")
+    distraction_label.pack(pady=10)
+
+    # Start distractions
+    trigger_distractions(SaveMe, distraction_label)
+
+def trigger_distractions(SaveMe, distraction_label):
+    distraction_text = random.choice(["Wrong Clue!", "Time's running out!", "Are you sure?", "Guess faster!"])
+    distraction_label.config(text=distraction_text)
+    SaveMe.after(5000, lambda: trigger_distractions(SaveMe, distraction_label))  # Change distractions every 5 seconds
+
+def check_guess(SaveMe):
+    global guess_number, secret_code, attempts, feedback_label
+
+    # Get the player's guess
+    guess = [entry.get().capitalize() for entry in entries]
+
+    # Validate the guess
+    if len(set(guess)) != 4 or not all(color in colors for color in guess):
+        messagebox.showwarning("Invalid Guess", "Please enter a valid guess with 4 unique colors!")
+        return
+
+    # Calculate correct positions and correct colors
+    correct_positions = sum([1 for i in range(4) if guess[i] == secret_code[i]])
+    correct_colors = sum([min(guess.count(color), secret_code.count(color)) for color in set(colors)]) - correct_positions
+
+    # Provide feedback
+    feedback = f"Guess {guess_number}: {correct_positions} in correct position, {correct_colors} correct color but wrong position."
+    print(feedback)  # Also show feedback in the terminal (for debugging)
+
+    # Update feedback label directly
+    feedback_label.config(text=feedback)
+    guess_number += 1
+
+    # Check for win or game over
+    if correct_positions == 4:
+        messagebox.showinfo("Victory!", "You guessed the correct sequence!")
+        finalscreen(SaveMe)  # Move to the final screen
+    elif guess_number > attempts:
+        messagebox.showwarning("Game Over", f"You've run out of attempts! The correct code was: {', '.join(secret_code)}")
+        finalscreen(SaveMe)  # Move to the final screen
+
+def finalscreen(SaveMe):
     # the ending which depends on the number of quests completed.. <2: bad ending , 2-3 : okay ending, >3: good ending
     for widget in SaveMe.winfo_children():
         widget.destroy() 

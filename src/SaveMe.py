@@ -4,9 +4,16 @@ from tkinter import Tk, Label, Button, Entry, END
 from PIL import Image, ImageTk  
 import tkinter.messagebox as messagebox
 import random
-import pyaudio
+import pygame
 
 # main loop starts here
+pygame.mixer.pre_init(44100, -16, 2, 2048) # initialising the pygame music player
+pygame.init()
+pygame.mixer.init()
+
+pygame.mixer.music.load(r"C:\Users\user\Documents\ACM-hacknight\SaveMe-acm\etro-game-music-245230.mp3")# loading the music file
+pygame.mixer.music.play()#playing the music file using pygames music player
+
 SaveMe = Tk()
 SaveMe.geometry("1000x1000")
 SaveMe["background"]= "#1C1C1E"
@@ -542,3 +549,5 @@ def finalscreen():
 
 startscreen()  
 SaveMe.mainloop()
+
+

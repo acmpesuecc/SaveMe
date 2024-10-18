@@ -1,6 +1,6 @@
 import tkinter as tk
 import os
-from tkinter import Tk, Label, Button, Entry, END
+from tkinter import Tk, Label, Button, Entry, END, Scrollbar, Listbox
 from PIL import Image, ImageTk  
 import tkinter.messagebox as messagebox
 import random
@@ -325,75 +325,92 @@ def fifthscreen():
     # quest 3 : bulls and cows
     for widget in SaveMe.winfo_children():
         widget.destroy()
+
+    # Background setup
     fif = Label(SaveMe, image=room3Image, background="#1C1C1E", height=1000, width=1000)
     fif.place(x=0, y=0, relwidth=1, relheight=1)
 
-    fifthlabel = Label(SaveMe, text=""" Are you ready to play a round of BULLS AND COWS? 
-                       Guess the secret 4 digit code and open the box""",
-                        font=("Helvetica", 20), fg="white", bg="#1C1C1E")
-    fifthlabel.place(x=100, y=200) 
+    # Main heading
+    fifthlabel = Label(SaveMe, text="""Are you ready to play a round of BULLS AND COWS? 
+                      Guess the secret 4-digit code and open the box""",
+                       font=("Helvetica", 20), fg="white", bg="#1C1C1E")
+    fifthlabel.place(x=100, y=50)
 
+    # Code generation and initial variables
     def generate_code():
         return ''.join(random.sample('0123456789', 4))
+
     guess = 0
     max_guess = 7
     guess_history = []
     code = generate_code()
 
-    
-    # code = ''.join(random.sample('0123456789', 4))
+    # Calculation of bulls and cows
+    def calculate_bullscows(guess_code):
+        bulls = sum(1 for i in range(4) if guess_code[i] == code[i])
+        cows = sum(1 for digit in guess_code if digit in code) - bulls
+        return bulls, cows
 
+    # Core Bulls and Cows functionality
     def bullcows():
         nonlocal guess, guess_history, code
 
+        # Clean up widgets for the main game view
         for widget in SaveMe.winfo_children():
             widget.place_forget()
 
         fif.place(x=0, y=0, relwidth=1, relheight=1)
 
+        # User prompt and input setup
         p = Label(SaveMe, text="Guess the 4-digit code:", font=("Helvetica", 20), fg="white", bg="#1C1C1E")
-        p.place(x=100, y=200)
+        p.place(x=70, y=150)
 
         guessentry = Entry(SaveMe, font=("Helvetica", 20), width=10)
-        guessentry.place(x=350, y=300)
+        guessentry.place(x=350, y=150, width=200)
 
+        # Submit button
         guessbutton = Button(SaveMe, text="Submit", borderwidth=0, highlightthickness=0,
                              command=lambda: checkguess(guessentry.get()), 
                              bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
-        guessbutton.place(x=350, y=400)
+        guessbutton.place(x=570, y=145)
 
-    def checkguess(guess_code):
-        nonlocal guess, guess_history, code
+        # Scrollable log for guess history
+        scrollbar = Scrollbar(SaveMe)
+        scrollbar.place(x=750, y=300, height=150)
 
-        if len(guess_code) != 4 or not guess_code.isdigit():
-            messagebox.showwarning("Invalid", "Enter a valid 4-digit code.")
-            return
+        guess_log = Listbox(SaveMe, yscrollcommand=scrollbar.set, height=6, width=50)
+        guess_log.place(x=150, y=300)
 
-        guess += 1
-        guess_history.append(guess_code)
-        bulls, cows = calculate_bullscows(guess_code)
+        scrollbar.config(command=guess_log.yview)
 
-        # res = Label(SaveMe, text=f"Bulls: {bulls}, Cows: {cows}", font=("Helvetica", 20), fg="white", bg="#1C1C1E")
-        # res.place(x=350, y=450)
+        # Function to process guesses
+        def checkguess(guess_code):
+            nonlocal guess, guess_history, code
 
-        if bulls == 4:
-            messagebox.showinfo("GUESSED IT!", f"You guessed the code {code} in {guess} attempts!")
-            sixthscreen()
-        elif guess >= max_guess:
-            messagebox.showwarning("Better Luck :(", f"You've used all your {max_guess} attempts! The code was {code}.")
-            sixthscreen()
-        else:
-            # res.config(text=f"Bulls: {bulls} , Cows: {cows}")
-            res = Label(SaveMe, text=f"Bulls: {bulls}, Cows: {cows}", font=("Helvetica", 20), fg="white", bg="#1C1C1E")
-            res.place(x=350, y=450)
-            giveup.place(x=400,y=800)
+            if len(guess_code) != 4 or not guess_code.isdigit():
+                messagebox.showwarning("Invalid", "Enter a valid 4-digit code.")
+                return
 
-    def calculate_bullscows(guess_code):
-        nonlocal code
-        bulls = sum(1 for i in range(4) if guess_code[i] == code[i])
-        cows = sum(1 for digit in guess_code if digit in code) - bulls
-        return bulls, cows
+            guess += 1
+            bulls, cows = calculate_bullscows(guess_code)
+            guess_history.append(guess_code)
 
+            # Log the guess and its result
+            guess_log.insert(END, f"Guess: {guess_code} | Bulls: {bulls} | Cows: {cows}")
+
+            if bulls == 4:
+                messagebox.showinfo("GUESSED IT!", f"You guessed the code {code} in {guess} attempts!")
+                sixthscreen()
+            elif guess >= max_guess:
+                messagebox.showwarning("Better Luck :(", f"You've used all your {max_guess} attempts! The code was {code}.")
+                guess_log.insert(END, "Game Over!")
+                sixthscreen()
+            else:
+                res = Label(SaveMe, text=f"Bulls: {bulls}, Cows: {cows}", font=("Helvetica", 20), fg="white", bg="#1C1C1E")
+                res.place(x=350, y=450)
+                giveup.place(x=400, y=800)
+
+    # Skipping the game functionality
     def skipp():
         for widget in SaveMe.winfo_children():
             widget.place_forget()
@@ -405,16 +422,20 @@ def fifthscreen():
                             bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
         nextbutton.place(x=450, y=500)
 
+    # Game options (Yes, No)
     yesbutton = Button(SaveMe, text="Yes", borderwidth=0, highlightthickness=0, command=bullcows, 
-                        bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
-    yesbutton.place(x=350, y=700) 
+                       bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
+    yesbutton.place(x=350, y=700)
 
     nobutton = Button(SaveMe, text="No", borderwidth=0, highlightthickness=0, command=skipp, 
-                       bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
+                      bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
     nobutton.place(x=500, y=700)
+
+    # Give up button
     giveup = Button(SaveMe, text="Give Up!", borderwidth=0, highlightthickness=0, command=skipp,
                     bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
-    giveup.place_forget()  
+    giveup.place_forget()
+
 
 
 def sixthscreen():

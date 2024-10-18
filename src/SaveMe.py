@@ -372,6 +372,7 @@ def fifthscreen():
         guess += 1
         guess_history.append(guess_code)
         bulls, cows = calculate_bullscows(guess_code)
+        messagebox.showinfo("Current Progress:",f"{guess_code} Bulls:{bulls} Cows:{cows}")
 
         # res = Label(SaveMe, text=f"Bulls: {bulls}, Cows: {cows}", font=("Helvetica", 20), fg="white", bg="#1C1C1E")
         # res.place(x=350, y=450)

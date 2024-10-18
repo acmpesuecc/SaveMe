@@ -4,6 +4,7 @@ from tkinter import Tk, Label, Button, Entry, END
 from PIL import Image, ImageTk  
 import tkinter.messagebox as messagebox
 import random
+import pyaudio
 
 # main loop starts here
 SaveMe = Tk()

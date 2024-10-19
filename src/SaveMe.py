@@ -10,7 +10,6 @@ SaveMe = Tk()
 SaveMe.geometry("1000x1000")
 SaveMe["background"]= "#1C1C1E"
 SaveMe.title("SaveMe")
-SaveMe.resizable(width=0, height=0)
 basedir = os.path.dirname(os.path.abspath(__file__))
 
 #________________IMAGES__________________
@@ -54,7 +53,7 @@ def startscreen():
     
     sbutton = Button(SaveMe, text="BEGIN!", borderwidth=0, highlightthickness=0, command=firstscreen, 
                      bg="#1C1C1E", fg="white", width=25, height=4, font=("Helvetica", 18))
-    sbutton.place(x=350, y=350)
+    sbutton.pack(expand=True)
 
 def firstscreen():
     # the story begins
@@ -70,7 +69,7 @@ def firstscreen():
             Hidden within those walls are truths waiting to be uncovered, and the key lies in your ability to decipher the clues....\"""",
                              font=("Helvetica", 14), fg="white", bg="#1C1C1E", wraplength=800)  
         
-        conbutton.place(x=400, y=500)
+        conbutton.pack(expand=True)
 
     def no():
         SaveMe.quit()
@@ -81,15 +80,15 @@ def firstscreen():
     letter = Label(SaveMe, text="""      *You are Aaron*
                    You have received a letter. Click yes to continue.""", 
                          font=("Helvetica", 18), fg="white", bg="#1C1C1E", wraplength=800)  
-    letter.place(x=100, y=300)  
+    letter.pack(expand=True)  
 
     yesbutton = Button(SaveMe, text="Yes", borderwidth=0, highlightthickness=0, command=yes, 
                         bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
-    yesbutton.place(x=350, y=400)
+    yesbutton.pack(expand=True)
 
     nobutton = Button(SaveMe, text="No", borderwidth=0, highlightthickness=0, command=no, 
                        bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
-    nobutton.place(x=500, y=400)
+    nobutton.pack(expand=True)
 
     conbutton = Button(SaveMe, text="Continue", borderwidth=0, highlightthickness=0, command=secondscreen,
                              bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
@@ -100,7 +99,7 @@ def secondscreen():
         widget.destroy()
 
     def proceed():
-        conbutton.place_forget()
+        #conbutton.place_forget()
         quitbutton.place_forget()
         
         secondlabel.config(text="""*You decided to visit the mansion and unravel the mystery surrounding the letter by yourself*
@@ -121,7 +120,7 @@ def secondscreen():
                                 Guard: That is all I have to say to you. Good luck. What awaits on the other end is for you to find out.""",
                              font=("Helvetica", 14), fg="white", bg="#1C1C1E", wraplength=800)
 
-        nextbutton.place(x=450, y=800)
+        nextbutton.place(x=450, y=500)
     def nextinsecond():
         nextbutton.place_forget()
         secondlabel.config(text="""*While you were looking around the mansion, you stumble across a room which looks familiar. 
@@ -130,7 +129,7 @@ def secondscreen():
                             "Solve the riddle if you want to see yourself out. This is your first quest." *""",
                          font=("Helvetica", 14), fg="white", bg="#1C1C1E", wraplength=800)
         nextbutton.config(command=thirdscreen)
-        nextbutton.place(x=450, y=800)
+        nextbutton.pack(expand=True)
 
             
     def quitt():
@@ -139,62 +138,67 @@ def secondscreen():
     secLabel.place(x=0, y=0, relwidth=1, relheight=1)  
 
     secondlabel = Label(SaveMe, text="*You don't know who the sender was. Do you still want to proceed with it?*", font=("Helvetica", 20), fg="white", bg="#1C1C1E")
-    secondlabel.place(x=100, y=200)
-
-    conbutton = Button(SaveMe, text="Continue", borderwidth=0, highlightthickness=0, command=proceed,
-                       bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
-    conbutton.place(x=350, y=400)
-
-    quitbutton = Button(SaveMe, text="Quit", borderwidth=0, highlightthickness=0, command=quitt, 
-                        bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
-    quitbutton.place(x=500, y=400)
+    secondlabel.pack(expand=True)
 
     nextbutton = Button(SaveMe, text="Next", borderwidth=0, highlightthickness=0, command=nextinsecond,
                         bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
+    nextbutton.pack(expand=True)
+
+    quitbutton = Button(SaveMe, text="Quit", borderwidth=0, highlightthickness=0, command=quitt, 
+                        bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
+    quitbutton.pack(expand=True)
+
     nextbutton.place_forget() 
 
 
 def thirdscreen():
-    # quest 1 : solve the riddle
+    # quest 1: solve the riddle
     for widget in SaveMe.winfo_children():
         widget.destroy()
 
-    thiLabel = Label(SaveMe, image=room4Image, background="#1C1C1E", height=1000, width=1000)
-    thiLabel.place(x=0, y=0, relwidth=1, relheight=1)  
+    # Set up the room image
+    thiLabel = Label(SaveMe, image=room4Image, background="#1C1C1E")
+    thiLabel.place(x=0, y=0, relwidth=1, relheight=1)
 
+    # Riddle text
     thirdlabel = Label(SaveMe, text="""*You search around the room and come across a paper*
                        The paper reads:
                        "Elsa has four daughters, and each of her daughters has a brother. 
                        How many children does Elsa have?" """, font=("Helvetica", 20), fg="white", bg="#1C1C1E", wraplength=800)
-    thirdlabel.place(x=100, y=200)
+    thirdlabel.place(relx=0.1, rely=0.2, anchor="nw")  # Adjusted to relative positioning
 
+    # Entry for the answer
     nlabel = Label(SaveMe, text="Enter your answer here:", font=("Helvetica", 14), fg="white", bg="#1C1C1E")
-    nlabel.place(x=350, y=400)
+    nlabel.place(relx=0.35, rely=0.4, anchor="nw")  # Adjusted to relative positioning
 
     answer = tk.Entry(SaveMe, font=("Helvetica", 14), width=10)
-    answer.place(x=350, y=450)
+    answer.place(relx=0.4, rely=0.43, anchor="nw")  # Adjusted to relative positioning
 
+    # Function to solve the riddle
     def riddlesolver():
         userans = answer.get().strip().upper()
 
-        if userans == "5" or userans == "FIVE":
+        if userans in ["5", "FIVE"]:
             messagebox.showinfo("Correct!", "You've solved the riddle!")
-            correct()  
+            correct()
         else:
             messagebox.showerror("Incorrect", "Incorrect answer. Try again!")
-            giveup.place(x=500, y=500)  
+            giveup.place(relx=0.5, rely=0.5, anchor="center")  # Centered
 
     def correct():
         for widget in SaveMe.winfo_children():
             widget.place_forget()
+            
+        fif = Label(SaveMe, image=room3Image, background="#1C1C1E", height=1000, width=1000)
+        fif.place(x=0, y=0, relwidth=1, relheight=1)
 
         correctlabel = Label(SaveMe, text="""You have successfully solved this riddle. The door will open for you now.
                        This journey awaits more such Quests. Can you solve them?""", font=("Helvetica", 20), fg="white", bg="#1C1C1E", wraplength=800)
-        correctlabel.place(x=100, y=200)
+        correctlabel.pack(expand=True)
 
         nextbutton = Button(SaveMe, text="Next", borderwidth=0, highlightthickness=0, command=fourthscreen,
                             bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
-        nextbutton.place(x=450, y=500)
+        nextbutton.pack(expand=True)
 
     def incorrect():
         for widget in SaveMe.winfo_children():
@@ -202,19 +206,19 @@ def thirdscreen():
 
         incorrectlabel = Label(SaveMe, text="""You have failed to solve this riddle.
                        We will let you go this time, but better luck next time!""", font=("Helvetica", 20), fg="white", bg="#1C1C1E", wraplength=800)
-        incorrectlabel.place(x=100, y=200)
+        incorrectlabel.place(relx=0.1, rely=0.2, anchor="nw")
 
         nextbutton = Button(SaveMe, text="Next", borderwidth=0, highlightthickness=0, command=fourthscreen,
                             bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
-        nextbutton.place(x=450, y=500)
+        nextbutton.place(relx=0.45, rely=0.5, anchor="center")
 
     submitbut = Button(SaveMe, text="Submit", borderwidth=0, highlightthickness=0, command=riddlesolver,
                        bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
-    submitbut.place(x=350, y=500)
+    submitbut.place(relx=0.5, rely=0.6, anchor="center")
+
     giveup = Button(SaveMe, text="Give Up!", borderwidth=0, highlightthickness=0, command=incorrect,
                     bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
-    giveup.place_forget()  
-
+    giveup.place_forget()
 
 
 def fourthscreen():
@@ -228,9 +232,11 @@ def fourthscreen():
                             You will need to solve each quest as it is and each awaits a quest here. 
                         You enter the next room and stumble across a mannequin with a label which goes "Ready for Rock, Paper and Scissors?"* 
                         """, font=("Helvetica", 20), fg="white", bg="#1C1C1E", wraplength=800)
-    fourthlabel.place(x=100, y=200)
+    fourthlabel.pack(expand=True)
     
     def play(choice):
+        for widget in SaveMe.winfo_children():
+            widget.destroy()
         options = ["Rock", "Paper", "Scissors"]
         mannequin = random.choice(options)
         if mannequin == choice:
@@ -246,8 +252,6 @@ def fourthscreen():
             nexxt()
 
     def rockpapsci():
-        for widget in SaveMe.winfo_children():
-            widget.place_forget()
         four.place(x=0, y=0, relwidth=1, relheight=1)
 
         # def play(choice):
@@ -280,15 +284,15 @@ def fourthscreen():
         ta.place(x=350, y=300)
         rock = Button(SaveMe, text="Rock", borderwidth=0, highlightthickness=0, command=lambda: play("Rock"), 
                     bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
-        rock.place(x=300, y=400)
+        rock.pack(expand=True)
 
         paper = Button(SaveMe, text="Paper", borderwidth=0, highlightthickness=0, command=lambda: play("Paper"), 
                     bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
-        paper.place(x=450, y=400)
+        paper.pack(expand=True)
 
         scissors = Button(SaveMe, text="Scissors", borderwidth=0, highlightthickness=0, command=lambda: play("Scissors"), 
                         bg="#1C1C1E", fg="white", width=10, height=2, font=("Helvetica", 14))
-        scissors.place(x=600, y=400)
+        scissors.place(expand=True)
 
     def nexxt():
         for widget in SaveMe.winfo_children():
